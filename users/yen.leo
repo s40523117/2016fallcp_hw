@@ -18,7 +18,7 @@
 <v t="leo.20151213173830.1" a="E"><vh>假如要在近端檢視, 使用下列按鈕</vh>
 <v t="leo.20151213085727.1"><vh>@button pelican-blog</vh></v>
 </v>
-<v t="amd.20151215180106.1"><vh>設定與開發</vh>
+<v t="amd.20151215180106.1" a="E"><vh>設定與開發</vh>
 <v t="amd.20151216151325.1" a="E"><vh>@clean index.html</vh>
 <v t="amd.20161004083800.1" a="E"><vh>html</vh>
 <v t="amd.20161004083800.2"><vh>head</vh></v>
@@ -149,7 +149,7 @@
 </v>
 </v>
 </v>
-<v t="leo.20151213230723.1"><vh>Pelican 設定</vh>
+<v t="leo.20151213230723.1" a="E"><vh>Pelican 設定</vh>
 <v t="leo.20151213230957.1"><vh>文章 Date 設定</vh></v>
 <v t="leo.20151213230729.1"><vh>使用 summary plugin</vh></v>
 </v>
@@ -162,10 +162,18 @@
 <v t="amd.20151215170350.1"><vh>以下為 content 目錄中的 md 檔案</vh></v>
 <v t="amd.20151216001126.1"><vh>md 檔案範例</vh></v>
 <v t="amd.20151215170031.1" a="E"><vh>@path ./../content</vh>
-<v t="amd.20160106093454.1" a="E"><vh>yen 所寫的網誌文章</vh>
-<v t="amd.20160727114506.1" a="E"><vh>201609</vh>
+<v t="amd.20160106093454.1" a="E"><vh>周哲宇 所寫的網誌文章</vh>
+<v t="amd.20160727114506.1" a="E"><vh>2016</vh>
 <v t="amd.20160727120222.1"><vh>@edit 20160921.md</vh></v>
 <v t="leo.20161014142409.1"><vh>@edit 20161014.md</vh></v>
+<v t="leo.20161214215900.1"><vh>@edit 20161114..md</vh></v>
+<v t="leo.20161216133217.1"><vh>@edit 20161202.md</vh></v>
+<v t="leo.20161214215924.1"><vh>@edit 20161209a.md</vh></v>
+<v t="leo.20161214215933.1"><vh>@edit 20161209b.md</vh></v>
+<v t="leo.20170106205658.1"><vh>@edit 20161217.md</vh></v>
+<v t="leo.20161230133320.1"><vh>@edit 20161223.md</vh></v>
+<v t="leo.20161230133341.1"><vh>@edit 20161230.md</vh></v>
+<v t="leo.20170106134055.1"><vh>@edit 20170106.md</vh></v>
 </v>
 </v>
 </v>
@@ -176,7 +184,14 @@
 </v>
 <v t="amd.20161004202833.1"><vh>@edit ../README.md</vh></v>
 <v t="yen.20161022111056.1"><vh>@button https server</vh></v>
+<v t="leo.20161214221354.1"><vh>@button ipv6 https server</vh></v>
 <v t="yen.20161022151749.1"><vh>產生 .key 與 .crt</vh></v>
+<v t="leo.20161230131434.1" a="E"><vh>Recovered Nodes</vh>
+<v t="leo.20161230131434.2"><vh>Recovered node "ch01 print() 與 input()" from @clean 20161217.md</vh>
+<v t="leo.20161230131434.3"><vh>old:ch01 print() 與 input()</vh></v>
+<v t="leo.20161230131434.4"><vh>new:ch01 print() 與 input()</vh></v>
+</v>
+</v>
 </vnodes>
 <tnodes>
 <t tx="amd.20151215170031.1"></t>
@@ -305,16 +320,10 @@ print("hello")
 ### 虎科大機械設計工程系
 
 &lt;small&gt;
-Created by [KMOLab](http://chiamingyen.github.io/kmolab/blog/)
+Created by [40523117](http://s40523117.github.io/kmolab/blog/)
 &lt;/small&gt;
 
-[甲班計算機程式課程網誌](blog/index.html)
-
-[乙班計算機程式課程網誌](https://mdecourse.github.io/2016fallcpb/blog)
-
-[計算機程式教學影片](https://vimeo.com/user24079973)
-
-[電腦輔助設計室電腦硬體](http://project.mde.tw/blog/yen-dian-nao-fu-zhu-she-ji-shi-dian-nao-pei-zhi.html)
+[40523117](blog/index.html)
 </t>
 <t tx="amd.20161004104641.1">&lt;section data-markdown&gt;
     &lt;script type="text/template"&gt;
@@ -478,6 +487,182 @@ PLUGINS = ['liquid_tags.notebook', 'summary']
 <t tx="leo.20151213230957.1"># 設定網誌以 md 檔案建立的 file system date 為準, 無需自行設定
 
 DEFAULT_DATE = 'fs'</t>
+<t tx="leo.20161214221354.1">@language python
+import os
+import subprocess
+import threading
+import socket
+import http.server, ssl
+
+class HTTPServerV6(http.server.HTTPServer):
+    address_family = socket.AF_INET6
+  
+def domake():
+    # build directory
+    os.chdir("./../")
+    ipv6_address = '2001:288:6004:17:3004::808'
+    server_address = (ipv6_address, 140.130.17.17)
+    #httpd = http.server.HTTPServer(server_address, http.server.SimpleHTTPRequestHandler)
+    httpd = HTTPServerV6(server_address, http.server.SimpleHTTPRequestHandler)
+    httpd.socket = ssl.wrap_socket(httpd.socket,
+                                   server_side=True,
+                                   certfile='localhost.crt',
+                                   keyfile='localhost.key',
+                                   ssl_version=ssl.PROTOCOL_TLSv1)
+    print("140.130.17.17 https server started")
+    httpd.serve_forever()
+
+# 利用執行緒執行 https 伺服器
+make = threading.Thread(target=domake)
+make.start()</t>
+<t tx="leo.20161230131434.1"></t>
+<t tx="leo.20161230131434.2">(uncached) leo.20161216135359.2
+Diff...
+  &lt;!-- ch01 基本的列印與輸入函式 --&gt;
+  &lt;script type="text/python3"&gt;
+  from browser import document
+  from browser import alert
+  
+  '''
+      # 利用 input() 取得使用者輸入, 然後進行資料處理或運算後, 列出結果
+      #01-01.py
+      print ("Hello World!")
+      #01-02.py
+      thetext = input("Enter some text ")
+      print ("This is what you entered:")
+      print (thetext)
+      #01-03.py
+      # Note that \n within quote marks forces a new line to be printed
+      thetext = input("Enter some text\n")
+      print ("This is what you entered:")
+      print (thetext)
+      #01-04.py
+      prompt  = "Enter a some text "
+      thetext = input(prompt)
+      print ("This is what you entered:")
+      print (thetext)
+  '''
+  
+  def get_input(ev):
+-     the_input= input("上課不會滑手機")
+?                       ^^^^^^^
++     the_input= input("請輸入")
+?                       ^^^
+-     alert("上課不會滑手機:"+str(the_input))
++     alert("輸入為:"+str(上課不會滑手機))
+  
+  document['ch01'].bind('click',get_input)
+  &lt;/script&gt;
+  &lt;button id="ch01"&gt;40523137&lt;/button&gt;
+  
+  &lt;pre class="brush: python"&gt;
+  &lt;script type="text/python3"&gt;
+  from browser import document
+  from browser import alert
+  
+  def get_input(ev):
+      the_input= input("請輸入")
+      alert("輸入為:"+str(the_input))
+  
+  document['ch01'].bind('click',get_input)
+  &lt;/script&gt;
+  &lt;button id="ch01"&gt;取輸入後, 列印出來&lt;/button&gt;
+- &lt;/pre&gt;
+?       -
++ &lt;/pre&gt;</t>
+<t tx="leo.20161230131434.3">&lt;!-- ch01 基本的列印與輸入函式 --&gt;
+&lt;script type="text/python3"&gt;
+from browser import document
+from browser import alert
+
+'''
+    # 利用 input() 取得使用者輸入, 然後進行資料處理或運算後, 列出結果
+    #01-01.py
+    print ("Hello World!")
+    #01-02.py
+    thetext = input("Enter some text ")
+    print ("This is what you entered:")
+    print (thetext)
+    #01-03.py
+    # Note that \n within quote marks forces a new line to be printed
+    thetext = input("Enter some text\n")
+    print ("This is what you entered:")
+    print (thetext)
+    #01-04.py
+    prompt  = "Enter a some text "
+    thetext = input(prompt)
+    print ("This is what you entered:")
+    print (thetext)
+'''
+
+def get_input(ev):
+    the_input= input("請輸入")
+    alert("輸入為:"+str(上課不會滑手機))
+
+document['ch01'].bind('click',get_input)
+&lt;/script&gt;
+&lt;button id="ch01"&gt;40523137&lt;/button&gt;
+
+&lt;pre class="brush: python"&gt;
+&lt;script type="text/python3"&gt;
+from browser import document
+from browser import alert
+
+def get_input(ev):
+    the_input= input("請輸入")
+    alert("輸入為:"+str(the_input))
+
+document['ch01'].bind('click',get_input)
+&lt;/script&gt;
+&lt;button id="ch01"&gt;取輸入後, 列印出來&lt;/button&gt;
+&lt;/pre&gt;</t>
+<t tx="leo.20161230131434.4">&lt;!-- ch01 基本的列印與輸入函式 --&gt;
+&lt;script type="text/python3"&gt;
+from browser import document
+from browser import alert
+
+'''
+    # 利用 input() 取得使用者輸入, 然後進行資料處理或運算後, 列出結果
+    #01-01.py
+    print ("Hello World!")
+    #01-02.py
+    thetext = input("Enter some text ")
+    print ("This is what you entered:")
+    print (thetext)
+    #01-03.py
+    # Note that \n within quote marks forces a new line to be printed
+    thetext = input("Enter some text\n")
+    print ("This is what you entered:")
+    print (thetext)
+    #01-04.py
+    prompt  = "Enter a some text "
+    thetext = input(prompt)
+    print ("This is what you entered:")
+    print (thetext)
+'''
+
+def get_input(ev):
+    the_input= input("上課不會滑手機")
+    alert("上課不會滑手機:"+str(the_input))
+
+document['ch01'].bind('click',get_input)
+&lt;/script&gt;
+&lt;button id="ch01"&gt;40523137&lt;/button&gt;
+
+&lt;pre class="brush: python"&gt;
+&lt;script type="text/python3"&gt;
+from browser import document
+from browser import alert
+
+def get_input(ev):
+    the_input= input("請輸入")
+    alert("輸入為:"+str(the_input))
+
+document['ch01'].bind('click',get_input)
+&lt;/script&gt;
+&lt;button id="ch01"&gt;取輸入後, 列印出來&lt;/button&gt;
+&lt;/pre&gt;
+</t>
 <t tx="yen.20161011114704.1">&lt;section data-markdown&gt;
     &lt;script type="text/template"&gt;
 @others
@@ -1030,14 +1215,14 @@ import http.server, ssl
 def domake():
     # build directory
     os.chdir("./../")
-    server_address = ('localhost', 5443)
+    server_address = ('localhost', 8443)
     httpd = http.server.HTTPServer(server_address, http.server.SimpleHTTPRequestHandler)
     httpd.socket = ssl.wrap_socket(httpd.socket,
                                    server_side=True,
                                    certfile='localhost.crt',
                                    keyfile='localhost.key',
                                    ssl_version=ssl.PROTOCOL_TLSv1)
-    print("5443 https server started")
+    print("8443 https server started")
     httpd.serve_forever()
 
 # 利用執行緒執行 https 伺服器

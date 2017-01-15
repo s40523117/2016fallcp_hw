@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>2016Fall CPA 課程網誌 (虎尾科大MDE)</title><link href="./" rel="alternate"></link><link href="./feeds/course.atom.xml" rel="self"></link><id>./</id><updated>2017-01-06T12:00:00+08:00</updated><entry><title>W17</title><link href="./w17.html" rel="alternate"></link><published>2017-01-06T12:00:00+08:00</published><updated>2017-01-06T12:00:00+08:00</updated><author><name>40523117</name></author><id>tag:,2017-01-06:./w17.html</id><summary type="html">&lt;p&gt;2017&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>2016Fall CPA 課程網誌 (虎尾科大MDE)</title><link href="./" rel="alternate"></link><link href="./feeds/course.atom.xml" rel="self"></link><id>./</id><updated>2017-01-06T12:00:00+08:00</updated><entry><title>單線旋轉動畫</title><link href="./dan-xian-xuan-zhuan-dong-hua.html" rel="alternate"></link><published>2017-01-06T12:00:00+08:00</published><updated>2017-01-06T12:00:00+08:00</updated><author><name>40523117</name></author><id>tag:,2017-01-06:./dan-xian-xuan-zhuan-dong-hua.html</id><summary type="html">&lt;p&gt;單線旋轉動畫:&lt;/p&gt;
+&lt;p&gt;本次練習較之前不一樣，不單是固定不變的直線，運用角度及不斷刷新使線條旋轉。
+起點設於圓心，每隔特定時間進行動畫繪製，逐一重新繪製直線與圓心球，運用x2 = x1 +  r&lt;em&gt;math.cos(theta&lt;/em&gt;deg)與y2 = y1 +  r&lt;em&gt;math.sin(theta&lt;/em&gt;deg)改變線段移動之角度。&lt;/p&gt;
 
 
 &lt;!-- 導入 Brython 標準程式庫 --&gt;
@@ -82,11 +84,114 @@ def animate():
     theta += 1
 
 timer.set_interval(animate, 50)
-&lt;/script&gt;</summary><category term="Brython"></category></entry><entry><title>W16 新年快樂</title><link href="./w16-xin-nian-kuai-le.html" rel="alternate"></link><published>2016-12-30T12:00:00+08:00</published><updated>2016-12-30T12:00:00+08:00</updated><author><name>40523117</name></author><id>tag:,2016-12-30:./w16-xin-nian-kuai-le.html</id><summary type="html">&lt;p&gt;2017年元旦快樂&lt;/p&gt;
+&lt;/script&gt;
+
+&lt;pre class="brush: python"&gt;
+&lt;!-- 導入 Brython 標準程式庫 --&gt;
+&lt;script type="text/javascript" 
+    src="https://cdn.rawgit.com/brython-dev/brython/master/www/src/brython_dist.js"&gt;
+&lt;/script&gt;
+
+&lt;!-- 啟動 Brython --&gt;
+&lt;script&gt;
+window.onload=function(){
+brython(1);
+}
+&lt;/script&gt;
+
+&lt;!-- 以下可以執行  Brython 程式 --&gt;
+&lt;canvas id="onebar" width="400" height="400"&gt;&lt;/canvas&gt;
+&lt;script type="text/python3"&gt;
+from browser import document
+from browser import window
+from browser import timer
+import math
+canvas = document["onebar"]
+ctx = canvas.getContext("2d")
+
+# 取畫布的寬與高度
+width = canvas.width
+height = canvas.height
+
+# 畫圓函式
+def circle(x,y,r):
+    ctx.beginPath()
+    ctx.arc(x, y, r, 0, math.pi*2, True)
+    ctx.fill()
+    ctx.closePath()
+
+def line(x1, y1, x2, y2):
+    # 以下可以利用 ctx 物件進行畫圖
+    # 先畫一條直線
+    ctx.beginPath()
+    # 設定線的寬度為 1 個單位
+    ctx.lineWidth = 1
+    # 將畫筆移動到 (x1, y1) 座標點
+    ctx.moveTo(x1, y1)
+    # 然後畫直線到 (x2, y2) 座標點
+    ctx.lineTo(x2, y2)
+    # 設定顏色為藍色, 也可以使用 "rgb(0, 0, 255)" 字串設定顏色值
+    ctx.strokeStyle = "blue"
+    # 實際執行畫線
+    ctx.stroke()
+    ctx.closePath()
+
+line(200, 200, 200, 300)
+circle(200, 200, 5)
+
+x1 = 200
+y1 = 200
+r = 100
+deg = math.pi/180
+
+theta = 0
+
+# 每隔特定時間, 進行動畫繪製
+def animate():
+    global theta
+    # 刷新畫布
+    ctx.clearRect(0, 0, width, height)
+    # 逐一重新繪製直線與圓心球
+    x2 = x1 +  r*math.cos(theta*deg)
+    y2 = y1 +  r*math.sin(theta*deg)
+    line(x1, y1, x2, y2)
+    # 再加一條小線段
+    x3 = x2 + 50*math.cos(10*theta*deg)
+    y3 = y2 + 50*math.sin(10*theta*deg)
+    line(x2, y2, x3, y3)
+    circle(x1, y1, 5)
+    theta += 1
+
+timer.set_interval(animate, 50)
+&lt;/script&gt;
+&lt;/pre&gt;</summary><category term="Brython"></category></entry><entry><title>W16 新年快樂</title><link href="./w16-xin-nian-kuai-le.html" rel="alternate"></link><published>2016-12-30T12:00:00+08:00</published><updated>2016-12-30T12:00:00+08:00</updated><author><name>40523117</name></author><id>tag:,2016-12-30:./w16-xin-nian-kuai-le.html</id><summary type="html">&lt;p&gt;2017 年元旦快樂&lt;/p&gt;
 
 
 &lt;p&gt;首先了解random亂數模組的用法&lt;/p&gt;
 &lt;p&gt;然後利用random模組產生一個介於1-100的整數,列印在網頁上&lt;/p&gt;
+&lt;p&gt;使用num = random.randint(X,Y)【X Y=要帶入的數字區間】，隨機選出所設定區間的數字，再利用迴圈設
+定邀選區幾個數字，但所選的數字可能重複，若使用random.sample(X,Y)，使其產生不同的是字亂碼。
+猜數字遊戲：
+        將
+            if 標準答案 &amp;lt; 你猜的數字:
+                #print("太大了，再猜一次 :)加油")
+                # 清除 id3 中的內容
+                id3.clear()
+                id3 &amp;lt;= "猜第" + str(猜測次數) + "次, 太大了，再猜一次 :)加油" + html.BR()
+            else:
+                #print("太小了，再猜一次 :)加油")
+                # 清除 id3 中的內容
+                id3.clear()
+                id3 &amp;lt;= "猜第" + str(猜測次數) + "次, 太小了，再猜一次 :)加油" + html.BR()
+            你猜的數字 = int(input("請輸入您所猜 1~100 間的整數:"))
+            猜測次數 += 1&lt;/p&gt;
+&lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    #print(&amp;quot;猜對了！總共猜了&amp;quot;, 猜測次數, &amp;quot;次&amp;quot;)
+    id3 &amp;lt;= &amp;quot;猜對了！答案為&amp;quot; + str(標準答案) + &amp;quot;, 總共猜了&amp;quot; + str(猜測次數) + &amp;quot;次&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;用以上程式進行手動的猜選數字，由程式判別所猜選的數字太大或太小，將程式中【你猜的數字】改成【PC猜的數字】則會由電腦自動進行猜測。&lt;/p&gt;
 &lt;!-- 導入 Brython 標準程式庫 --&gt;
 
 &lt;script type="text/javascript" 
@@ -112,20 +217,48 @@ import random
 print_location = document["newyear"]
 
 def gen_int():
-    num = random.randint(1,100)
+    num = random.randint(1, 49)
+    # 設法將 num 列印在網頁上
     #print_location = document["newyear"]
     print_location &lt;= num + html.BR()
 
 def lottery(e):
     for i in range(6):
         gen_int()
-    print_location &lt;= "~" + html.BR()
+    print_location &lt;= "(可能重複)恭喜中獎!" + html.BR()
 
 #document["but1"].bind("click", gen_int)
 document["but1"].bind("click", lottery)
 &lt;/script&gt;
 
-&lt;p&gt;&lt;button id="but1"&gt;產生整數亂數&lt;/button&gt;&lt;/p&gt;
+&lt;p&gt;&lt;button id="but1"&gt;產生 1-49 整數亂數 (可能重複)&lt;/button&gt;&lt;/p&gt;
+
+&lt;pre class="brush: python"&gt;&lt;div id="newyear"&gt;&lt;/div&gt;
+&lt;script type="text/python3"&gt;
+from browser import document
+from browser import html
+import random
+print_location = document["newyear"]
+
+def gen_int():
+    num = random.randint(1, 49)
+    # 設法將 num 列印在網頁上
+    #print_location = document["newyear"]
+    print_location &lt;= num + html.BR()
+
+def lottery(e):
+    for i in range(6):
+        gen_int()
+    print_location &lt;= "(可能重複)恭喜中獎!" + html.BR()
+
+#document["but1"].bind("click", gen_int)
+document["but1"].bind("click", lottery)
+&lt;/script&gt;
+&lt;button id="but1"&gt;產生 1-49 整數亂數 (可能重複)&lt;/button&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;因為上述程式可能會產生相同的號碼, 改用&lt;a href="https://docs.python.org/3/library/random.html#random.sample"&gt; random.sample()&lt;/a&gt;, 使其產生六個不同的整數!!&lt;/p&gt;
+
 &lt;script type="text/python3"&gt;
 from browser import document
 from browser import html
@@ -136,13 +269,32 @@ def lottery(e):
     num_list = random.sample(list(range(1, 50)), 6)
     for i in range(6):
         print_location &lt;= num_list[i] + html.BR()
-    print_location &lt;= "恭喜中獎!" + html.BR()
+    print_location &lt;= "(不會重複)恭喜中獎!" + html.BR()
 
 document["but2"].bind("click", lottery)
 &lt;/script&gt;
 
-&lt;p&gt;&lt;button id="but2"&gt;恭喜發財&lt;/button&gt;&lt;/p&gt;
-&lt;p&gt;猜數字&lt;/p&gt;
+&lt;p&gt;&lt;button id="but2"&gt;(不會重複)恭喜中獎&lt;/button&gt;&lt;/p&gt;
+
+&lt;pre class="brush: python"&gt;&lt;script type="text/python3"&gt;
+from browser import document
+from browser import html
+import random
+print_location = document["newyear"]
+
+def lottery(e):
+    num_list = random.sample(list(range(1, 50)), 6)
+    for i in range(6):
+        print_location &lt;= num_list[i] + html.BR()
+    print_location &lt;= "(不會重複)恭喜中獎!" + html.BR()
+
+document["but2"].bind("click", lottery)
+&lt;/script&gt;
+&lt;button id="but2"&gt;恭喜中獎&lt;/button&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;以下建立一個猜數字遊戲:&lt;/p&gt;
+
 &lt;div id="id3"&gt;&lt;/div&gt;
 
 &lt;script type="text/python3"&gt;
@@ -163,12 +315,12 @@ def guess(ev):
             #print("太大了，再猜一次 :)加油")
             # 清除 id3 中的內容
             id3.clear()
-            id3 &lt;= "太大了，再猜一次 :)加油" + html.BR()
+            id3 &lt;= "猜第" + str(猜測次數) + "次, 太大了，再猜一次 :)加油" + html.BR()
         else:
             #print("太小了，再猜一次 :)加油")
             # 清除 id3 中的內容
             id3.clear()
-            id3 &lt;= "太小了，再猜一次 :)加油" + html.BR()
+            id3 &lt;= "猜第" + str(猜測次數) + "次, 太小了，再猜一次 :)加油" + html.BR()
         你猜的數字 = int(input("請輸入您所猜 1~100 間的整數:"))
         猜測次數 += 1
 
@@ -179,6 +331,47 @@ document["but3"].bind("click", guess)
 &lt;/script&gt;
 
 &lt;p&gt;&lt;button id="but3"&gt;玩猜數字遊戲&lt;/button&gt;&lt;/p&gt;
+
+&lt;pre class="brush: python"&gt;&lt;div id="id3"&gt;&lt;/div&gt;
+&lt;script type="text/python3"&gt;
+from browser import document
+from browser import html
+import random
+
+id3 = document["id3"]
+def guess(ev):
+    # 清除 id3 中的內容
+    id3.clear()
+    id3 &lt;= "開始玩猜數字遊戲" + html.BR()
+    標準答案 = random.randint(1, 100)
+    你猜的數字 = int(input("請輸入您所猜 1~100 間的整數:"))
+    猜測次數 = 1
+    while 標準答案 != 你猜的數字:
+        if 標準答案 &lt; 你猜的數字:
+            #print("太大了，再猜一次 :)加油")
+            # 清除 id3 中的內容
+            id3.clear()
+            id3 &lt;= "猜第" + str(猜測次數) + "次, 太大了，再猜一次 :)加油" + html.BR()
+        else:
+            #print("太小了，再猜一次 :)加油")
+            # 清除 id3 中的內容
+            id3.clear()
+            id3 &lt;= "猜第" + str(猜測次數) + "次, 太小了，再猜一次 :)加油" + html.BR()
+        你猜的數字 = int(input("請輸入您所猜 1~100 間的整數:"))
+        猜測次數 += 1
+
+    #print("猜對了！總共猜了", 猜測次數, "次")
+    id3 &lt;= "猜對了！答案為" + str(標準答案) + ", 總共猜了" + str(猜測次數) + "次"
+
+document["but3"].bind("click", guess)
+&lt;/script&gt;
+&lt;button id="but3"&gt;玩猜數字遊戲&lt;/button&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;以下則利用程式執行猜數字遊戲:&lt;/p&gt;
+
+&lt;p&gt;&lt;button id="but4"&gt;利用程式玩猜數字&lt;/button&gt;&lt;/p&gt;
+
 &lt;div id="id4"&gt;&lt;/div&gt;
 
 &lt;script type="text/python3"&gt;
@@ -227,7 +420,56 @@ def autoguess(ev):
 document["but4"].bind("click", autoguess)
 &lt;/script&gt;
 
-&lt;p&gt;&lt;button id="but4"&gt;利用程式玩猜數字&lt;/button&gt;&lt;/p&gt;</summary><category term="Brython"></category></entry><entry><title>CP W15 練習</title><link href="./cp-w15-lian-xi.html" rel="alternate"></link><published>2016-12-23T12:00:00+08:00</published><updated>2016-12-23T12:00:00+08:00</updated><author><name>40523117</name></author><id>tag:,2016-12-23:./cp-w15-lian-xi.html</id><summary type="html">&lt;!-- 導入 Brython 標準程式庫 --&gt;
+&lt;pre class="brush: python"&gt;&lt;div id="id4"&gt;&lt;/div&gt;
+&lt;script type="text/python3"&gt;
+from browser import document
+from browser import html
+import random
+
+id4 = document["id4"]
+def autoguess(ev):
+    執行次數 = 100
+    總猜測次數 = 0
+    for i in range(執行次數):
+        id4 &lt;= "第" + str(i+1) + "次玩:" + html.BR()
+        下限 = 1
+        上限 = 100
+        標準答案 = random.randint(下限, 上限)
+        pc猜的數字 = random.randint(下限, 上限)
+        #print(標準答案, pc猜的數字)
+        #integer int()
+        #string str()
+        #float float()
+        #你猜的數字 = int(input("請輸入您所猜的整數:"))
+        猜測次數 = 1
+        while 標準答案 != pc猜的數字:
+            if 標準答案 &lt; pc猜的數字:
+                #print("太大了，再猜一次 :)加油")
+                # 因此已經確定"pc猜的數字"不是答案, 因此 - 1
+                id4 &lt;= "電腦猜的數字:" + str(pc猜的數字) + " 太大了!" + html.BR()
+                上限 = pc猜的數字 - 1
+            else:
+                #print("太小了，再猜一次 :)加油")
+                # 因此已經確定"pc猜的數字"不是答案, 因此 + 1
+                id4 &lt;= "電腦猜的數字:" + str(pc猜的數字) + " 太小了!" + html.BR()
+                下限 = pc猜的數字 + 1
+            #pc猜的數字 = int(input("請輸入您所猜的整數:"))
+            pc猜的數字 = random.randint(下限, 上限)
+            猜測次數 += 1
+
+        #print("猜對了！總共猜了", 猜測次數, "次")
+        id4 &lt;= "電腦猜對了, 答案為: " + str(標準答案) + ", 總共猜了 "+ str(猜測次數) + "次" + html.BR()
+        總猜測次數 += 猜測次數
+    平均猜測次數 = int(總猜測次數/執行次數)
+    #print("平均次數", 平均猜測次數)
+    id4 &lt;= "平均次數: " + str(平均猜測次數)
+
+document["but4"].bind("click", autoguess)
+&lt;/script&gt;
+&lt;button id="but4"&gt;利用程式玩猜數字&lt;/button&gt;
+&lt;/pre&gt;</summary><category term="Brython"></category></entry><entry><title>W15 練習 聖誕快樂</title><link href="./w15-lian-xi-sheng-dan-kuai-le.html" rel="alternate"></link><published>2016-12-23T12:00:00+08:00</published><updated>2016-12-23T12:00:00+08:00</updated><author><name>40523117</name></author><id>tag:,2016-12-23:./w15-lian-xi-sheng-dan-kuai-le.html</id><summary type="html">&lt;p&gt;聖誕快樂&lt;/p&gt;
+&lt;p&gt;利用your_input = input("請輸入一個整數!")，輸入一整數下去try，顯示輸入的整數大於或小於所設定的數字。&lt;/p&gt;
+&lt;!-- 導入 Brython 標準程式庫 --&gt;
 
 &lt;script type="text/javascript" 
     src="https://cdn.rawgit.com/brython-dev/brython/master/www/src/brython_dist.js"&gt;
@@ -277,11 +519,13 @@ c = do["con"]
 def compa(e):
     your_input = input("請輸入一個整數!")
     # 如何判斷所輸入的整數比 10 大
-
-    if int(your_input) &gt; 10:
-        c &lt;= "所輸入的整數:" + your_input + "比 10 大" + html.BR()
-    else:
-        c &lt;= "所輸入的整數:" + your_input + "比 10 小" + html.BR()
+    try:
+        if int(your_input) &gt; 10:
+            c &lt;= "所輸入的整數:" + your_input + "比 10 大" + html.BR()
+        else:
+            c &lt;= "所輸入的整數:" + your_input + "比 10 小" + html.BR()
+    except:
+        c &lt;= "請輸入整數!!" + html.BR()
 
 #print("test")
 '''
@@ -291,54 +535,7 @@ for i in range(5):
 do["b1"].bind("click", compa)
 &lt;/script&gt;
 &lt;button id="b1"&gt;compa&lt;/button&gt;
-&lt;/pre&gt;</summary><category term="Brython"></category></entry><entry><title>CP W14 練習</title><link href="./cp-w14-lian-xi.html" rel="alternate"></link><published>2016-12-16T12:00:00+08:00</published><updated>2016-12-16T12:00:00+08:00</updated><author><name>40523117</name></author><id>tag:,2016-12-16:./cp-w14-lian-xi.html</id><summary type="html">&lt;!-- 導入 Brython 標準程式庫 --&gt;
-
-&lt;script type="text/javascript" 
-    src="https://cdn.rawgit.com/brython-dev/brython/master/www/src/brython_dist.js"&gt;
-&lt;/script&gt;
-
-&lt;!-- 啟動 Brython --&gt;
-
-&lt;script&gt;
-window.onload=function(){
-brython(1);
-}
-&lt;/script&gt;
-
-&lt;!-- ch01 基本的列印與輸入函式 --&gt;
-
-&lt;script type="text/python3"&gt;
-from browser import document
-from browser import alert
-
-'''
-    # 利用 input() 取得使用者輸入, 然後進行資料處理或運算後, 列出結果
-    #01-01.py
-    print ("Hello World!")
-    #01-02.py
-    thetext = input("Enter some text ")
-    print ("This is what you entered:")
-    print (thetext)
-    #01-03.py
-    # Note that \n within quote marks forces a new line to be printed
-    thetext = input("Enter some text\n")
-    print ("This is what you entered:")
-    print (thetext)
-    #01-04.py
-    prompt  = "Enter a some text "
-    thetext = input(prompt)
-    print ("This is what you entered:")
-    print (thetext)
-'''
-
-def get_input(ev):
-    the_input= input("請輸入")
-    alert("輸入為:"+str(the_input))
-
-document['ch01'].bind('click',get_input)
-&lt;/script&gt;
-
-&lt;p&gt;&lt;button id="ch01"&gt;取輸入後, 列印出來&lt;/button&gt;&lt;/p&gt;</summary><category term="Brython"></category></entry><entry><title>W13 練習-2</title><link href="./w13-lian-xi-2.html" rel="alternate"></link><published>2016-12-10T12:00:00+08:00</published><updated>2016-12-10T12:00:00+08:00</updated><author><name>40523117</name></author><id>tag:,2016-12-10:./w13-lian-xi-2.html</id><summary type="html">&lt;p&gt;將&lt;a herf="http://mde.tw/2016fallcp/course/Python3Programs.txt"&gt;
+&lt;/pre&gt;</summary><category term="Brython"></category></entry><entry><title>W13 練習-2</title><link href="./w13-lian-xi-2.html" rel="alternate"></link><published>2016-12-10T12:00:00+08:00</published><updated>2016-12-10T12:00:00+08:00</updated><author><name>40523117</name></author><id>tag:,2016-12-10:./w13-lian-xi-2.html</id><summary type="html">&lt;p&gt;將&lt;a herf="http://mde.tw/2016fallcp/course/Python3Programs.txt"&gt;
 http://mde.tw/2016fallcp/course/Python3Programs.txt&lt;/a&gt; 整理成brython
 練習:編寫一個可以將適用者輸入的攝氏溫度,轉為華氏溫度&lt;/p&gt;
 
